@@ -5,9 +5,10 @@ from Crypto.Signature import DSS
 
 
 class Voter:
-    def __init__(self, self_id: int) -> None:
+    def __init__(self, self_id: int, can_vote: bool) -> None:
         self.id = self_id
         self.vote = None
+        self.can_vote = can_vote
         self.factors = []
         self.ballot_a = []
         self.ballot_b = []

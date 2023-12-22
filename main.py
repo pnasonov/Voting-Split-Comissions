@@ -18,6 +18,12 @@ print("\nVoting process...")
 # voter making his choice
 for i, voter in enumerate(voters):
     voter.make_choice(candidates)
+    if not voter.can_vote:
+        raise ValueError("Voter has no rights to vote!")
+    if not voter.vote:
+        raise ValueError("Voter didn't choose candidate!")
+    if voter.vote not in candidates:
+        raise ValueError("Voter make a wrong choice!")
     print(f"Voter {i + 1} has voted for", voter.vote)
 
 print("\nDividing to factors:")

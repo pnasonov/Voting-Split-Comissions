@@ -19,7 +19,7 @@ class CentralCommission:
             while True:
                 new_id = random.randint(10, 50)
                 if new_id not in ids:
-                    voters.append(Voter(new_id))
+                    voters.append(Voter(new_id, can_vote=True))
                     break
 
         return voters

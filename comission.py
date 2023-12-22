@@ -29,4 +29,5 @@ class Commission:
                     self.checked_ids.append(ballot[1])
                     self.collected[ballot[1]] = ballot[0]
                 else:
-                    raise ValueError(ballot[1])
+                    raise ValueError(f"Found more than 1 votes of "
+                                     f"voter with  id: {ballot[1]}!")
