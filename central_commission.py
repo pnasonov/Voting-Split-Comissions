@@ -14,13 +14,8 @@ class CentralCommission:
     @staticmethod
     def create_voters() -> list:
         voters = []
-        ids = []
         for _ in range(4):
-            while True:
-                new_id = random.randint(10, 50)
-                if new_id not in ids:
-                    voters.append(Voter(new_id, can_vote=True))
-                    break
+            voters.append(Voter(random.randint(10, 50), can_vote=True))
 
         return voters
 
@@ -88,7 +83,7 @@ class CentralCommission:
                 raise ValueError(f"No such {key} voter ID in Second commission results!")
 
         for i in results:
-            if results.count(i) > res[0]:
+            if results.count(i) > results.count(res[0]):
                 res = [i]
             elif i not in res and results.count(i) == results.count(res[0]):
                 res.append(i)
