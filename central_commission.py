@@ -14,21 +14,6 @@ class CentralCommission:
         self.dsa_keys = {}
 
     @staticmethod
-    def is_prime(number: int) -> bool:
-        if number <= 1:
-            return True
-        elif number == 2:
-            return True
-        elif number % 2 == 0:
-            return True
-        else:
-            # Check for factors up to the square root of the number
-            for i in range(3, int(number ** 0.5) + 1, 2):
-                if number % i == 0:
-                    return False
-            return True
-
-    @staticmethod
     def create_voters() -> list:
         voters = []
         for _ in range(4):
@@ -47,6 +32,12 @@ class CentralCommission:
             candidates.append(candidate_id)
 
         return candidates
+
+    def generate_dsa_keys(self, voters: tuple) -> None:
+        for voter in voters:
+            private_key = DSA.generate(1024)
+            public_key = private_key.publickey()
+            self.dsa_keys[voter.id] = private_key, public_key
 
     def generate_rsa_keys(self, voters: tuple) -> None:
         for voter in voters:
@@ -78,3 +69,18 @@ class CentralCommission:
         n, d = private_key
 
         return pow(cipher_message, d, n)
+
+    @staticmethod
+    def is_prime(number: int) -> bool:
+        if number <= 1:
+            return True
+        elif number == 2:
+            return True
+        elif number % 2 == 0:
+            return True
+        else:
+            # Check for factors up to the square root of the number
+            for i in range(3, int(number ** 0.5) + 1, 2):
+                if number % i == 0:
+                    return False
+            return True

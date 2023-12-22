@@ -1,5 +1,8 @@
 from random import choice
 
+from Crypto.Hash import SHA256
+from Crypto.Signature import DSS
+
 
 class Voter:
     def __init__(self, self_id: int) -> None:
@@ -20,3 +23,10 @@ class Voter:
 
         self.factors.append(choice(factors))
         self.factors.append(self.vote // self.factors[0])
+
+    @staticmethod
+    def sign_message(message, private_key):
+        hash_obj = SHA256.new(bytes(message))
+        signer = DSS.new(private_key, 'fips-186-3')
+        signature = signer.sign(hash_obj)
+        return signature
