@@ -2,8 +2,6 @@ import random
 import math
 
 from Crypto.PublicKey import DSA
-from Crypto.Signature import DSS
-from Crypto.Hash import SHA256
 
 from voter import Voter
 
@@ -16,8 +14,13 @@ class CentralCommission:
     @staticmethod
     def create_voters() -> list:
         voters = []
+        ids = []
         for _ in range(4):
-            voters.append(Voter(random.randint(10, 50)))
+            while True:
+                new_id = random.randint(10, 50)
+                if new_id not in ids:
+                    voters.append(Voter(new_id))
+                    break
 
         return voters
 
@@ -69,6 +72,28 @@ class CentralCommission:
         n, d = private_key
 
         return pow(cipher_message, d, n)
+
+    def count_result(self, first_commission: dict, second_commission: dict) -> list:
+        results = []
+        res = [0]
+        for key in first_commission.keys():
+            if key in second_commission:
+                decrypted_vote = self.decrypt(
+                    self.rsa_keys[key][1],
+                    first_commission[key] * second_commission[key]
+                )
+                print(f"Voter id: {key}, vote: {decrypted_vote}")
+                results.append(decrypted_vote)
+            else:
+                raise ValueError(f"No such {key} voter ID in Second commission results!")
+
+        for i in results:
+            if results.count(i) > res[0]:
+                res = [i]
+            elif i not in res and results.count(i) == results.count(res[0]):
+                res.append(i)
+
+        return res
 
     @staticmethod
     def is_prime(number: int) -> bool:

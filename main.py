@@ -11,6 +11,8 @@ for i, voter in enumerate(voters):
 
 # creating candidates with ids
 candidates = tuple(central_commission.create_candidates())
+for i in range(len(candidates)):
+    print(f"Candidate {i + 1} ID: {candidates[i]}")
 
 print("\nVoting process...")
 # voter making his choice
@@ -59,14 +61,22 @@ for i, voter in enumerate(voters):
           f"{voter.ballot_a[2]}\n{voter.ballot_b[2]}")
 
 # sending ballots to commissions
-first_commission = Commission({k: v[1] for k, v in central_commission.dsa_keys.items()})
+first_commission = Commission(
+    {k: v[1] for k, v in central_commission.dsa_keys.items()}
+)
 first_commission.check_ballots([voter.ballot_a for voter in voters])
 print(f"\nFirst commission publishing results of sign check "
       f"{first_commission.collected}")
 
-second_commission = Commission({k: v[1] for k, v in central_commission.dsa_keys.items()})
+second_commission = Commission(
+    {k: v[1] for k, v in central_commission.dsa_keys.items()}
+)
 second_commission.check_ballots([voter.ballot_b for voter in voters])
 print(f"\nSecond commission publishing results of sign check "
-      f"{second_commission.collected}")
+      f"{second_commission.collected}\n")
 
 # central commission collecting votes
+result = central_commission.count_result(first_commission.collected,
+                                         second_commission.collected)
+
+print(f"\nElection winner: {result}")
